@@ -14,6 +14,12 @@ state("Steam")
     string25 chapterCard: 0x10D9410, 0x182;
 }
 
+state("M Store")
+{
+    int loadState: 0x1E46C50, 0x1E8, 0x4A0, 0x4A0, 0x310, 0x1EDC;
+    string25 chapterCard: 0x149C3E0, 0x182;
+}
+
 startup
 {
     vars.isLoading = false;
