@@ -27,6 +27,9 @@ init
         case 31207424:
             version = "Steam";
             break;
+        case 36208640:
+            version = "M Store";
+            break;
     }
 }
 
