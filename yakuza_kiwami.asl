@@ -44,7 +44,7 @@ update
     vars.doSplit = false;
     vars.doStart = false;
 
-    bool chapterDisplay = current.chapterCard.StartsWith("2d_mn_syotitle");
+    bool chapterDisplay = current.chapterCard != null && current.chapterCard.StartsWith("2d_mn_syotitle");
 
     if (chapterDisplay && !vars.prevChapterDisplay)
     {
