@@ -2,7 +2,7 @@
 // Autosplitter by ToxicTT (Discord: ToxicTT#4487)
 // Load remover by DrTChops
 
-state("Steam")
+state("YakuzaKiwami", "Steam")
 {
     int loadState: 0x19D5050, 0x1E8, 0x4A0, 0x4A0, 0x310, 0x1EDC;
     // string25 gameState0 : 0x128DD50, 0xC8, 0x490, 0x72;
@@ -14,10 +14,20 @@ state("Steam")
     string25 chapterCard: 0x10D9410, 0x182;
 }
 
-state("M Store")
+state("YakuzaKiwami", "M Store")
 {
     int loadState: 0x1E46C50, 0x1E8, 0x4A0, 0x4A0, 0x310, 0x1EDC;
     string25 chapterCard: 0x149C3E0, 0x182;
+}
+
+init
+{
+    switch(modules.First().ModuleMemorySize)
+    {
+        case 31207424:
+            version = "Steam";
+            break;
+    }
 }
 
 startup
