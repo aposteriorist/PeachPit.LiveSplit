@@ -13,6 +13,10 @@ state("YakuzaKiwami", "Steam")
     // string25 gameState4 : 0x128DD50, 0xC8, 0x490, 0x192;
     // string25 gameState5 : 0x128DD50, 0xC8, 0x490, 0x1DA;
     string25 chapterCard: 0x10D9410, 0x182;
+    string30 hactName: 0x10D9678, 0x7EA;
+    byte enemyCount: 0x1274F20, 0x3F8;
+    short kiryuHP: 0x1296140, 0x1E0, 0xA1E;
+
 }
 
 state("YakuzaKiwami", "M Store")
@@ -40,6 +44,7 @@ startup
     vars.doSplit = false;
     vars.doStart = false;
     vars.prevChapterDisplay = false;
+    vars.nishiki = false;
 }
 
 update
@@ -48,9 +53,14 @@ update
     vars.doSplit = false;
     vars.doStart = false;
 
+    // The run doesn't end after this QTE if Nishiki's health is high enough, so here we'll simply store whether or not the QTE has begun.
+    // We'll also check against Kiryu's HP, because otherwise a Game Over will give a false positive.
+    vars.nishiki = (vars.nishiki || current.hactName == "h6195_nishiki_fight_02") && current.kiryuHP > 0;
+
     bool chapterDisplay = current.chapterCard != null && current.chapterCard.StartsWith("2d_mn_syotitle");
 
-    if (chapterDisplay && !vars.prevChapterDisplay)
+    if (chapterDisplay && !vars.prevChapterDisplay
+     || vars.nishiki && current.enemyCount == 0)
     {
         vars.doSplit = true;
         vars.doStart = true;
@@ -72,4 +82,13 @@ split
 isLoading
 {
     return vars.isLoading;
+}
+
+onReset
+{
+    vars.isLoading = false;
+    vars.doSplit = false;
+    vars.doStart = false;
+    vars.prevChapterDisplay = false;
+    vars.nishiki = false;
 }
