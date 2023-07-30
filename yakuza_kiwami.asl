@@ -57,6 +57,8 @@ startup
         settings.Add("2d_mn_syotitle_12.dds", true, "Chapter 11: Honor and Humanity", "chapters");
         settings.Add("2d_mn_syotitle_13.dds", true, "Chapter 12: Reunited", "chapters");
     settings.Add("bosses", true, "Boss Splits");
+        settings.Add("h6162_liu_pick_sword", false, "Ch. 9: Lau Ka Long", "bosses");
+        settings.Add("h6140_majima_floorbreak", false, "Ch. 11: Majima", "bosses");
         settings.Add("h6216_mia_revive", false, "Finale: Jingu", "bosses");
         settings.Add("h6195_nishiki_fight_02", true, "Finale: Nishiki", "bosses");
 }
