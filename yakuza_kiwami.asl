@@ -1,28 +1,27 @@
-// Yakuza Kiwami (PC, Steam) autosplitter & load remover
+// Yakuza Kiwami (PC: Steam, M Store) autosplitter & load remover
 // Autosplitter by ToxicTT (Discord: ToxicTT#4487)
 // Load remover by DrTChops
 // Refresh + M Store + Settings by PlayingLikeAss (aposteriorist on Github)
 
 state("YakuzaKiwami", "Steam")
 {
-    int loadState: 0x19D5050, 0x1E8, 0x4A0, 0x4A0, 0x310, 0x1EDC;
+    byte loadState: 0x19D5050, 0x1E8, 0x4A0, 0x4A0, 0x310, 0x1EDC;
     // string25 gameState0 : 0x128DD50, 0xC8, 0x490, 0x72;
     // string25 gameState1 : 0x128DD50, 0xC8, 0x490, 0xBA;
     // string25 gameState2 : 0x128DD50, 0xC8, 0x490, 0x102;
     // string25 gameState3 : 0x128DD50, 0xC8, 0x490, 0x14A;
     // string25 gameState4 : 0x128DD50, 0xC8, 0x490, 0x192;
     // string25 gameState5 : 0x128DD50, 0xC8, 0x490, 0x1DA;
-    string25 chapterCard: 0x10D9410, 0x182;
+    string25 titleCard: 0x10D9410, 0x182;
     string30 hactName: 0x10D9678, 0x7EA;
     byte enemyCount: 0x1274F20, 0x3F8;
     short kiryuHP: 0x1296140, 0x1E0, 0xA1E;
-
 }
 
 state("YakuzaKiwami", "M Store")
 {
-    int loadState: 0x1E46C50, 0x1E8, 0x4A0, 0x4A0, 0x310, 0x1EDC;
-    string25 chapterCard: 0x149C3E0, 0x182;
+    byte loadState: 0x1E46C50, 0x1E8, 0x4A0, 0x4A0, 0x310, 0x1EDC;
+    string25 titleCard: 0x149C3E0, 0x182;
 }
 
 init
@@ -65,16 +64,18 @@ update
 {
     vars.doSplit = false;
 
+    Func<string, bool> isRelevant = split => (split != null && settings.ContainsKey(split) && settings[split] && !vars.Splits.Contains(split));
+
     // Check if a particular boss QTE is happening / has happened, signalling us to track that fight's progress.
     // We'll also check against Kiryu's HP, because otherwise a Game Over would give a false positive.
-    if (current.hactName != null && settings.ContainsKey(current.hactName) && settings[current.hactName] && current.enemyCount == 0 && current.kiryuHP > 0 && !vars.Splits.Contains(current.hactName))
+    if (isRelevant(current.hactName) && current.enemyCount == 0 && current.kiryuHP > 0)
     {
         vars.Splits.Add(current.hactName);
         vars.doSplit = true;
     }
 
     // Check if a particular chapter title card is being displayed.
-    else if (current.titleCard != null && settings.ContainsKey(current.titleCard) && settings[current.titleCard] && !vars.Splits.Contains(current.titleCard))
+    else if (isRelevant(current.titleCard))
     {
         vars.Splits.Add(current.titleCard);
         vars.doSplit = true;
@@ -84,7 +85,7 @@ update
 
 start
 {
-    return current.titleCard == "2d_mn_syotitle_01.dds";
+   return current.titleCard == "2d_mn_syotitle_01.dds";
 }
 
 split
