@@ -41,6 +41,7 @@ startup
 {
     vars.Splits = new HashSet<string>();
     vars.doSplit = false;
+    vars.boss = "";
 
     settings.Add("chapters", true, "Chapter End Splits");
         settings.Add("2d_mn_syotitle_02.dds", true, "Chapter 1: Fate of a Kinslayer", "chapters");
@@ -56,7 +57,7 @@ startup
         settings.Add("2d_mn_syotitle_12.dds", true, "Chapter 11: Honor and Humanity", "chapters");
         settings.Add("2d_mn_syotitle_13.dds", true, "Chapter 12: Reunited", "chapters");
     settings.Add("bosses", true, "Boss Splits");
-        settings.Add("h6216_mia_revive", true, "Finale: Jingu", "bosses");
+        settings.Add("h6216_mia_revive", false, "Finale: Jingu", "bosses");
         settings.Add("h6195_nishiki_fight_02", true, "Finale: Nishiki", "bosses");
 }
 
@@ -67,19 +68,38 @@ update
     Func<string, bool> isRelevant = split => (split != null && settings.ContainsKey(split) && settings[split] && !vars.Splits.Contains(split));
 
     // Check if a particular boss QTE is happening / has happened, signalling us to track that fight's progress.
-    // We'll also check against Kiryu's HP, because otherwise a Game Over would give a false positive.
-    if (isRelevant(current.hactName) && current.enemyCount == 0 && current.kiryuHP > 0)
+    if (isRelevant(current.hactName))
+        vars.boss = current.hactName;
+
+    // If we're tracking a boss fight:
+    if (vars.boss != "")
     {
-        vars.Splits.Add(current.hactName);
-        vars.doSplit = true;
+        // Check against Kiryu's HP, because otherwise a Game Over would give a false positive.
+        if (current.kiryuHP < 1)
+        {
+            vars.boss = "";
+        }
+        // No more enemies means we're done.
+        else if (current.enemyCount == 0)
+        {
+            // Split forever on the final boss.
+            if (vars.boss != "h6195_nishiki_fight_02")
+            {
+                vars.Splits.Add(vars.boss);
+                vars.boss = "";
+            }
+
+            vars.doSplit = true;
+        }
     }
 
-    // Check if a particular chapter title card is being displayed.
+    // Otherwise, check if a particular chapter title card is being displayed.
     else if (isRelevant(current.titleCard))
     {
         vars.Splits.Add(current.titleCard);
         vars.doSplit = true;
     }
+
 
 }
 
@@ -102,4 +122,5 @@ onReset
 {
     vars.Splits.Clear();
     vars.doSplit = false;
+    vars.boss = "";
 }
