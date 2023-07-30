@@ -1,7 +1,7 @@
 // Yakuza Kiwami (PC, Steam) autosplitter & load remover
 // Autosplitter by ToxicTT (Discord: ToxicTT#4487)
 // Load remover by DrTChops
-// Refresh + M Store by PlayingLikeAss (aposteriorist on Github)
+// Refresh + M Store + Settings by PlayingLikeAss (aposteriorist on Github)
 
 state("YakuzaKiwami", "Steam")
 {
@@ -40,38 +40,51 @@ init
 
 startup
 {
-    vars.isLoading = false;
+    vars.Splits = new HashSet<string>();
     vars.doSplit = false;
-    vars.doStart = false;
-    vars.prevChapterDisplay = false;
-    vars.nishiki = false;
+
+    settings.Add("chapters", true, "Chapter End Splits");
+        settings.Add("2d_mn_syotitle_02.dds", true, "Chapter 1: Fate of a Kinslayer", "chapters");
+        settings.Add("2d_mn_syotitle_03.dds", true, "Chapter 2: 10 Years Gone", "chapters");
+        settings.Add("2d_mn_syotitle_04.dds", true, "Chapter 3: Funeral of Fists", "chapters");
+        settings.Add("2d_mn_syotitle_05.dds", true, "Chapter 4: An Encounter", "chapters");
+        settings.Add("2d_mn_syotitle_06.dds", true, "Chapter 5: Purgatory", "chapters");
+        settings.Add("2d_mn_syotitle_07.dds", true, "Chapter 6: Father and Child", "chapters");
+        settings.Add("2d_mn_syotitle_08.dds", true, "Chapter 7: The Dragon and the Koi", "chapters");
+        settings.Add("2d_mn_syotitle_09.dds", true, "Chapter 8: The Scheme", "chapters");
+        settings.Add("2d_mn_syotitle_10.dds", true, "Chapter 9: The Rescue", "chapters");
+        settings.Add("2d_mn_syotitle_11.dds", true, "Chapter 10: Shape of Love", "chapters");
+        settings.Add("2d_mn_syotitle_12.dds", true, "Chapter 11: Honor and Humanity", "chapters");
+        settings.Add("2d_mn_syotitle_13.dds", true, "Chapter 12: Reunited", "chapters");
+    settings.Add("bosses", true, "Boss Splits");
+        settings.Add("h6216_mia_revive", true, "Finale: Jingu", "bosses");
+        settings.Add("h6195_nishiki_fight_02", true, "Finale: Nishiki", "bosses");
 }
 
 update
 {
-    vars.isLoading = current.loadState == 1;
     vars.doSplit = false;
-    vars.doStart = false;
 
-    // The run doesn't end after this QTE if Nishiki's health is high enough, so here we'll simply store whether or not the QTE has begun.
-    // We'll also check against Kiryu's HP, because otherwise a Game Over will give a false positive.
-    vars.nishiki = (vars.nishiki || current.hactName == "h6195_nishiki_fight_02") && current.kiryuHP > 0;
-
-    bool chapterDisplay = current.chapterCard != null && current.chapterCard.StartsWith("2d_mn_syotitle");
-
-    if (chapterDisplay && !vars.prevChapterDisplay
-     || vars.nishiki && current.enemyCount == 0)
+    // Check if a particular boss QTE is happening / has happened, signalling us to track that fight's progress.
+    // We'll also check against Kiryu's HP, because otherwise a Game Over would give a false positive.
+    if (current.hactName != null && settings.ContainsKey(current.hactName) && settings[current.hactName] && current.enemyCount == 0 && current.kiryuHP > 0 && !vars.Splits.Contains(current.hactName))
     {
+        vars.Splits.Add(current.hactName);
         vars.doSplit = true;
-        vars.doStart = true;
     }
 
-    vars.prevChapterDisplay = chapterDisplay;
+    // Check if a particular chapter title card is being displayed.
+    else if (current.titleCard != null && settings.ContainsKey(current.titleCard) && settings[current.titleCard] && !vars.Splits.Contains(current.titleCard))
+    {
+        vars.Splits.Add(current.titleCard);
+        vars.doSplit = true;
+    }
+
 }
 
 start
 {
-    return vars.doStart;
+    return current.titleCard == "2d_mn_syotitle_01.dds";
 }
 
 split
@@ -81,14 +94,11 @@ split
 
 isLoading
 {
-    return vars.isLoading;
+    return current.loadState == 1;
 }
 
 onReset
 {
-    vars.isLoading = false;
+    vars.Splits.Clear();
     vars.doSplit = false;
-    vars.doStart = false;
-    vars.prevChapterDisplay = false;
-    vars.nishiki = false;
 }
