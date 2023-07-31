@@ -27,6 +27,15 @@ state("YakuzaKiwami", "M Store")
     short kiryuHP: 0x14AAF20, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
 }
 
+state("YakuzaKiwami", "GOG")
+{
+    byte loadState: 0x197BAD0, 0x1E8, 0x4A0, 0x4A0, 0x310, 0x1EDC;
+    string25 titleCard: 0x1080010, 0x182;
+    string40 hactName: 0x1080278, 0x7EA;
+    byte enemyCount: 0x121BB20, 0x3F8;
+    short kiryuHP: 0x1084120, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
+}
+
 init
 {
     switch(modules.First().ModuleMemorySize)
@@ -36,6 +45,9 @@ init
             break;
         case 36208640:
             version = "M Store";
+            break;
+        case 30654464:
+            version = "GOG";
             break;
     }
 }
