@@ -13,7 +13,7 @@ state("YakuzaKiwami", "Steam")
     // string25 gameState4 : 0x128DD50, 0xC8, 0x490, 0x192;
     // string25 gameState5 : 0x128DD50, 0xC8, 0x490, 0x1DA;
     string25 titleCard: 0x10D9410, 0x182;
-    string30 hactName: 0x10D9678, 0x7EA;
+    string40 hactName: 0x10D9678, 0x7EA;
     byte enemyCount: 0x1274F20, 0x3F8;
     short kiryuHP: 0x10DD520, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
 }
@@ -22,7 +22,7 @@ state("YakuzaKiwami", "M Store")
 {
     byte loadState: 0x1E46C50, 0x1E8, 0x4A0, 0x4A0, 0x310, 0x1EDC;
     string25 titleCard: 0x149C3E0, 0x182;
-    string30 hactName: 0x149C648, 0x7EA;
+    string40 hactName: 0x149C648, 0x7EA;
     byte enemyCount: 0x1666F40, 0x3F8;
     short kiryuHP: 0x14AAF20, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
 }
@@ -76,6 +76,8 @@ startup
         settings.Add("h6140_majima_floorbreak", false, "Ch. 11: Majima", "bosses");
         settings.Add("h6216_mia_revive", false, "Finale: Jingu", "bosses");
         settings.Add("h6195_nishiki_fight_02", true, "Finale: Nishiki", "bosses");
+
+    settings.SetToolTip("h6195_nishiki_fight_02", "Automatically ends the run.");
 }
 
 update
@@ -140,4 +142,4 @@ onReset
     vars.Splits.Clear();
     vars.doSplit = false;
     vars.boss = "";
-}
+)
