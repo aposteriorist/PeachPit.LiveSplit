@@ -15,7 +15,7 @@ state("YakuzaKiwami", "Steam")
     string25 titleCard: 0x10D9410, 0x182;
     string30 hactName: 0x10D9678, 0x7EA;
     byte enemyCount: 0x1274F20, 0x3F8;
-    short kiryuHP: 0x1296140, 0x1E0, 0xA1E;
+    short kiryuHP: 0x10DD520, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
 }
 
 state("YakuzaKiwami", "M Store")
