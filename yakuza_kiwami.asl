@@ -49,8 +49,8 @@ init
 startup
 {
     vars.Splits = new HashSet<string>();
-    vars.doSplit = false;
     vars.boss = "";
+    vars.isRelevant = null; // In onStart, this will store our delegate.
 
     settings.Add("chapters", true, "Chapter End Splits");
         settings.Add("2d_mn_syotitle_02.dds", true, "Chapter 1: Fate of a Kinslayer", "chapters");
@@ -75,17 +75,29 @@ startup
     settings.SetToolTip("h6195_nishiki_fight_02", "Automatically ends the run.");
 }
 
-update
+start
 {
-    vars.doSplit = false;
+   return current.titleCard == "2d_mn_syotitle_01.dds";
+}
 
-    Func<string, bool> isRelevant = split => (split != null && settings.ContainsKey(split) && settings[split] && !vars.Splits.Contains(split));
+onStart
+{
+    // In the startup event, settings is a reference to an ASLSettingsBuilder, so it's useless.
+    // This is the earliest time we can grab settings as an ASLSettingsReader.
+    if (vars.isRelevant == null)
+    {
+        Func<string, bool> isRelevant = split => (split != null && settings.ContainsKey(split) && settings[split] && !vars.Splits.Contains(split));
+        vars.isRelevant = isRelevant;
+    }
+}
 
-    // Check if a particular boss QTE is happening / has happened, signalling us to track that fight's progress.
-    if (isRelevant(current.hactName))
+split
+{
+    // Check if we should start tracking a fight, based on relevant hacts.
+    if (vars.isRelevant(current.hactName))
         vars.boss = current.hactName;
 
-    // If we're tracking a boss fight:
+    // If we're tracking a fight:
     if (vars.boss != "")
     {
         // Check against Kiryu's HP, because otherwise a Game Over would give a false positive.
@@ -96,33 +108,23 @@ update
         // No more enemies means we're done.
         else if (current.enemyCount == 0)
         {
-            // Split forever on the final boss.
+            // Split forever on the final boss. Otherwise, split once.
             if (vars.boss != "h6195_nishiki_fight_02")
             {
                 vars.Splits.Add(vars.boss);
                 vars.boss = "";
             }
 
-            vars.doSplit = true;
+            return true;
         }
     }
 
-    // Otherwise, check if a particular chapter title card is being displayed.
-    else if (isRelevant(current.titleCard))
+    // Otherwise, split if a particular chapter title card is being displayed.
+    else if (vars.isRelevant(current.titleCard))
     {
         vars.Splits.Add(current.titleCard);
-        vars.doSplit = true;
+        return true;
     }
-}
-
-start
-{
-   return current.titleCard == "2d_mn_syotitle_01.dds";
-}
-
-split
-{
-    return vars.doSplit;
 }
 
 isLoading
@@ -133,6 +135,5 @@ isLoading
 onReset
 {
     vars.Splits.Clear();
-    vars.doSplit = false;
     vars.boss = "";
 }
