@@ -6,16 +6,10 @@
 state("YakuzaKiwami", "Steam")
 {
     byte loadState: 0x19D5050, 0x1E8, 0x4A0, 0x4A0, 0x310, 0x1EDC;
-    // string25 gameState0 : 0x128DD50, 0xC8, 0x490, 0x72;
-    // string25 gameState1 : 0x128DD50, 0xC8, 0x490, 0xBA;
-    // string25 gameState2 : 0x128DD50, 0xC8, 0x490, 0x102;
-    // string25 gameState3 : 0x128DD50, 0xC8, 0x490, 0x14A;
-    // string25 gameState4 : 0x128DD50, 0xC8, 0x490, 0x192;
-    // string25 gameState5 : 0x128DD50, 0xC8, 0x490, 0x1DA;
     string25 titleCard: 0x10D9410, 0x182;
     string40 hactName: 0x10D9678, 0x7EA;
-    byte enemyCount: 0x1274F20, 0x3F8;
     short kiryuHP: 0x10DD520, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
+    byte enemyCount: 0x1274F20, 0x3F8;
 }
 
 state("YakuzaKiwami", "M Store")
@@ -23,8 +17,8 @@ state("YakuzaKiwami", "M Store")
     byte loadState: 0x1E46C50, 0x1E8, 0x4A0, 0x4A0, 0x310, 0x1EDC;
     string25 titleCard: 0x149C3E0, 0x182;
     string40 hactName: 0x149C648, 0x7EA;
-    byte enemyCount: 0x1666F40, 0x3F8;
     short kiryuHP: 0x14AAF20, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
+    byte enemyCount: 0x1666F40, 0x3F8;
 }
 
 state("YakuzaKiwami", "GOG")
@@ -32,8 +26,8 @@ state("YakuzaKiwami", "GOG")
     byte loadState: 0x197BAD0, 0x1E8, 0x4A0, 0x4A0, 0x310, 0x1EDC;
     string25 titleCard: 0x1080010, 0x182;
     string40 hactName: 0x1080278, 0x7EA;
-    byte enemyCount: 0x121BB20, 0x3F8;
     short kiryuHP: 0x1084120, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
+    byte enemyCount: 0x121BB20, 0x3F8;
 }
 
 init
@@ -71,6 +65,7 @@ startup
         settings.Add("2d_mn_syotitle_11.dds", true, "Chapter 10: Shape of Love", "chapters");
         settings.Add("2d_mn_syotitle_12.dds", true, "Chapter 11: Honor and Humanity", "chapters");
         settings.Add("2d_mn_syotitle_13.dds", true, "Chapter 12: Reunited", "chapters");
+
     settings.Add("bosses", true, "Boss Splits");
         settings.Add("h6162_liu_pick_sword", false, "Ch. 9: Lau Ka Long", "bosses");
         settings.Add("h6140_majima_floorbreak", false, "Ch. 11: Majima", "bosses");
@@ -118,8 +113,6 @@ update
         vars.Splits.Add(current.titleCard);
         vars.doSplit = true;
     }
-
-
 }
 
 start
@@ -142,4 +135,4 @@ onReset
     vars.Splits.Clear();
     vars.doSplit = false;
     vars.boss = "";
-)
+}
