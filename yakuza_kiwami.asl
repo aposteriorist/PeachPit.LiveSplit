@@ -71,8 +71,7 @@ startup
         settings.Add("h6140_majima_floorbreak", false, "Ch. 11: Majima", "bosses");
         settings.Add("h6216_mia_revive", false, "Finale: Jingu", "bosses");
         settings.Add("h6195_nishiki_fight_02", true, "Finale: Nishiki", "bosses");
-
-    settings.SetToolTip("h6195_nishiki_fight_02", "Automatically ends the run.");
+            settings.Add("timerend", false, "If checked, the Nishiki split will forcibly stop the timer (by splitting repeatedly if extra splits remain).", "h6195_nishiki_fight_02");
 }
 
 start
@@ -108,8 +107,8 @@ split
         // No more enemies means we're done.
         else if (current.enemyCount == 0)
         {
-            // Split forever on the final boss. Otherwise, split once.
-            if (vars.boss != "h6195_nishiki_fight_02")
+            // Split forever on the final boss if that setting is set. Otherwise, split once.
+            if (vars.boss != "h6195_nishiki_fight_02" || !settings["timerend"])
             {
                 vars.Splits.Add(vars.boss);
                 vars.boss = "";
