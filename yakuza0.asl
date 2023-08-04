@@ -3,10 +3,11 @@
 // Thank you rythin_sr for the advice, Drake_Shadow and JustSayKuro for initial testing.
 // Description: https://pastebin.com/uTDJEGCk
 // Load remover by DrTChops
+// Load bugfix by PlayingLikeAss (aposteriorist on Github)
 
 state("Yakuza0")
 {
-    int loadState : 0x132C520, 0xA38, 0x38, 0x4A0, 0x4A0, 0x4A0, 0x1EDC;
+    int loadState : 0x1A696C0, 0x0, 0x2D54;
     string15 gameState : 0x01305FC8, 0x50, 0x6E2;
     string40 location : 0x01163F28, 0x150, 0x18, 0x50;
 }
@@ -117,7 +118,7 @@ startup
     settings.Add("ch17C", false, "Reached the top floor of Dojima HQ", "ch17");
     settings.SetToolTip("ch17C", "Splits once you enter the cutscene with Awano.");
     settings.Add("ch17D", false, "Finished with Dojima HQ fights", "ch17");
-    settings.SetToolTip("ch17D", "Splits once you done fighting at Dojima HQ and transitioned to the Consortium Ship.");
+    settings.SetToolTip("ch17D", "Splits once you're done fighting at Dojima HQ and transitioned to the Consortium Ship.");
 }
 
 update
