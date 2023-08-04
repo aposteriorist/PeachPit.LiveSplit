@@ -1,20 +1,49 @@
-// Yakuza 0 (PC, Steam) autosplitter & load remover
+// Yakuza 0 (PC: Steam, M Store, GOG) autosplitter & load remover
 // Autosplitter by ToxicTT (Discord: ToxicTT#4487)
 // Thank you rythin_sr for the advice, Drake_Shadow and JustSayKuro for initial testing.
 // Description: https://pastebin.com/uTDJEGCk
 // Load remover by DrTChops
-// Load bugfix by PlayingLikeAss (aposteriorist on Github)
+// M Store + GOG + load bugfix by PlayingLikeAss (aposteriorist on Github)
 
-state("Yakuza0")
+state("Yakuza0", "Steam")
 {
-    int loadState : 0x1A696C0, 0x0, 0x2D54;
-    string15 gameState : 0x01305FC8, 0x50, 0x6E2;
-    string40 location : 0x01163F28, 0x150, 0x18, 0x50;
+    string40 location: 0x1163F28, 0x150, 0x18, 0x50;
+    string25 gameState: 0x1305FC8, 0x50, 0x6E2;
+    int loadState: 0x1A696C0, 0x0, 0x2D54;
+}
+
+state("Yakuza0", "M Store")
+{
+    string40 location: 0x14EB6C8, 0x150, 0x18, 0x50;
+    string25 gameState: 0x16C1410, 0x60, 0x6E2;
+    int loadState: 0x1E45740, 0x0, 0x2D54;
+}
+
+state("Yakuza0", "GOG")
+{
+    string40 location: 0x1108BA8, 0x150, 0x18, 0x50;
+    string25 gameState: 0x12AAC48, 0x50, 0x6E2;
+    int loadState: 0x1A0E140, 0x0, 0x2D54;
+}
+
+init
+{
+    switch(modules.First().ModuleMemorySize)
+    {
+        case 31207424:
+            version = "Steam";
+            break;
+        case 36274176:
+            version = "M Store";
+            break;
+        case 31997952:
+            version = "GOG";
+            break;
+    }
 }
 
 startup
 {
-    vars.isLoading = false;
     vars.doSplit = false;
     vars.chapter = 1;
     vars.postEmptyLocation = "";
@@ -123,7 +152,6 @@ startup
 
 update
 {
-    vars.isLoading = current.loadState == 1;
     vars.doSplit = false;
 
     // reset chapter on both manual start or auto start (if it ever gets added)
@@ -355,5 +383,5 @@ split
 
 isLoading
 {
-    return vars.isLoading;
+    return current.loadState == 1;
 }
