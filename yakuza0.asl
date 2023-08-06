@@ -7,6 +7,7 @@
 
 state("Yakuza0", "Steam")
 {
+    byte mainMenu: 0x1084820, 0x5AC;
     string40 location: 0x1163F28, 0x150, 0x18, 0x50;
     string25 gameState: 0x1305FC8, 0x50, 0x6E2;
     int loadState: 0x1A696C0, 0x0, 0x2D54;
@@ -14,6 +15,7 @@ state("Yakuza0", "Steam")
 
 state("Yakuza0", "M Store")
 {
+    byte mainMenu: 0x16E2CA8, 0x5AC;
     string40 location: 0x14EB6C8, 0x150, 0x18, 0x50;
     string25 gameState: 0x16C1410, 0x60, 0x6E2;
     int loadState: 0x1E45740, 0x0, 0x2D54;
@@ -21,6 +23,7 @@ state("Yakuza0", "M Store")
 
 state("Yakuza0", "GOG")
 {
+    byte mainMenu: 0x1029820, 0x5AC;
     string40 location: 0x1108BA8, 0x150, 0x18, 0x50;
     string25 gameState: 0x12AAC48, 0x50, 0x6E2;
     int loadState: 0x1A0E140, 0x0, 0x2D54;
@@ -371,6 +374,11 @@ update
             vars.doSplit = settings["ch17D"];
         }
     }
+}
+
+start
+{
+    return current.gameState == "pjcm_title_ps3.sbb" && current.mainMenu == 0 && old.mainMenu == 1;
 }
 
 onStart
