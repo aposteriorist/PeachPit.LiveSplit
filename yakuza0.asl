@@ -47,7 +47,6 @@ startup
     vars.doSplit = false;
     vars.chapter = 1;
     vars.postEmptyLocation = "";
-    vars.prevPhase = timer.CurrentPhase;
 
     settings.Add("Chapters", true, "Split on the end of each chapter");
     settings.Add("Midsplits", false, "Optional splits (check tooltips)");
@@ -153,13 +152,6 @@ startup
 update
 {
     vars.doSplit = false;
-
-    // reset chapter on both manual start or auto start (if it ever gets added)
-    if (timer.CurrentPhase == TimerPhase.Running && vars.prevPhase == TimerPhase.NotRunning)
-    {
-        vars.chapter = 1;
-    }
-    vars.prevPhase = timer.CurrentPhase;
 
     if (current.location == "" && old.location != "")
     {
@@ -374,6 +366,12 @@ update
             vars.doSplit = settings["ch17D"];
         }
     }
+}
+
+onStart
+{
+    vars.chapter = 1;
+    vars.postEmptyLocation = "";
 }
 
 split
