@@ -171,207 +171,210 @@ update
             vars.doSplit = settings["Chapters"] && vars.chapter > 1;
         }
     }
-    else if (vars.chapter == 1)
+    else if (settings["Midsplits"])
     {
-        if (current.location == "Nakamichi St. Entrance" && vars.postEmptyLocation == "Dojima Family HQ")
+        if (vars.chapter == 1)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch1A"];
+            if (current.location == "Nakamichi St. Entrance" && vars.postEmptyLocation == "Dojima Family HQ")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch1A"];
+            }
+            else if (current.location == "Dojima Family HQ" && vars.postEmptyLocation == "Tenkaichi St. Entrance")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch1B"];
+            }
         }
-        else if (current.location == "Dojima Family HQ" && vars.postEmptyLocation == "Tenkaichi St. Entrance")
+        else if (vars.chapter == 2)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch1B"];
+            if (current.location == "Hotel District" && vars.postEmptyLocation == "Near Kiryu's Apartment")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch2A"];
+            }
+            else if (current.location == "Public Park 3" && old.location == "Tenkaichi Alley" && vars.postEmptyLocation != "Public Park 3")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch2B"];
+            }
         }
-    }
-    else if (vars.chapter == 2)
-    {
-        if (current.location == "Hotel District" && vars.postEmptyLocation == "Near Kiryu's Apartment")
+        else if (vars.chapter == 3)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch2A"];
+            if (current.location == "Sotenbori St. West" && vars.postEmptyLocation == "Cabaret Grand")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch3A"];
+            }
+            else if (current.location == "Shofukucho South" && vars.postEmptyLocation == "Odyssey")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch3B"];
+            }
         }
-        else if (current.location == "Public Park 3" && old.location == "Tenkaichi Alley" && vars.postEmptyLocation != "Public Park 3")
+        else if (vars.chapter == 4)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch2B"];
+            if (current.location == "Shofukucho East" && vars.postEmptyLocation == "Maharaja Sotenbori")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch4A"];
+            }
+            else if (current.location == "Shofukucho South" && vars.postEmptyLocation == "Hogushi Kaikan Massage")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch4B"];
+            }
         }
-    }
-    else if (vars.chapter == 3)
-    {
-        if (current.location == "Sotenbori St. West" && vars.postEmptyLocation == "Cabaret Grand")
+        else if (vars.chapter == 5)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch3A"];
+            if (current.location == "Serena Backlot" && vars.postEmptyLocation == "Serena")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch5A"];
+            }
         }
-        else if (current.location == "Shofukucho South" && vars.postEmptyLocation == "Odyssey")
+        else if (vars.chapter == 6)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch3B"];
+            if (current.location == "Near Kiryu's Apartment" && vars.postEmptyLocation == "Hotel District")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch6A"];
+            }
+            else if (current.location == "Sewer" && vars.postEmptyLocation == "Asia")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch6B"];
+            }
         }
-    }
-    else if (vars.chapter == 4)
-    {
-        if (current.location == "Shofukucho East" && vars.postEmptyLocation == "Maharaja Sotenbori")
+        else if (vars.chapter == 7)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch4A"];
+            if (current.location != "Magutako" && old.location == "Magutako" && vars.postEmptyLocation != "Magutako")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch7A"];
+            }
+            else if (current.location == "Hoganji Yokocho" && vars.postEmptyLocation == "Hogushi Kaikan Massage")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch7B"];
+            }
         }
-        else if (current.location == "Shofukucho South" && vars.postEmptyLocation == "Hogushi Kaikan Massage")
+        else if (vars.chapter == 8)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch4B"];
+            if (current.location == "Sotenbori St. West" && vars.postEmptyLocation == "Cabaret Grand")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch8A"];
+            }
+            else if (current.location == "Shofukucho" && vars.postEmptyLocation == "Odyssey's Warehouse")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch8B"];
+            }
         }
-    }
-    else if (vars.chapter == 5)
-    {
-        if (current.location == "Serena Backlot" && vars.postEmptyLocation == "Serena")
+        else if (vars.chapter == 9)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch5A"];
+            if (current.location == "Serena Backlot" && vars.postEmptyLocation == "Serena")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch9A"];
+            }
         }
-    }
-    else if (vars.chapter == 6)
-    {
-        if (current.location == "Near Kiryu's Apartment" && vars.postEmptyLocation == "Hotel District")
+        else if (vars.chapter == 10)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch6A"];
+            if (current.location == "Tojo Clan Headquarters" && vars.postEmptyLocation == "West Park")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch10A"];
+            }
+            else if (current.location == "Pier" && vars.postEmptyLocation == "Tojo Clan Headquarters")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch10B"];
+            }
         }
-        else if (current.location == "Sewer" && vars.postEmptyLocation == "Asia")
+        else if (vars.chapter == 11)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch6B"];
+            if (current.location == "Bishamon Bridge" && vars.postEmptyLocation == "The Bed of Styx")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch11A"];
+            }
         }
-    }
-    else if (vars.chapter == 7)
-    {
-        if (current.location != "Magutako" && old.location == "Magutako" && vars.postEmptyLocation != "Magutako")
+        else if (vars.chapter == 13)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch7A"];
+            if (current.location == "Benten Inn" && vars.postEmptyLocation == "CAL Videos")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch13A"];
+            }
+            else if (current.location == "Building Under Construction" && vars.postEmptyLocation == "Benten Inn")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch13B"];
+            }
         }
-        else if (current.location == "Hoganji Yokocho" && vars.postEmptyLocation == "Hogushi Kaikan Massage")
+        else if (vars.chapter == 14)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch7B"];
+            if (current.location == "Crescendo Building" && vars.postEmptyLocation == "West Park")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch14A"];
+            }
         }
-    }
-    else if (vars.chapter == 8)
-    {
-        if (current.location == "Sotenbori St. West" && vars.postEmptyLocation == "Cabaret Grand")
+        else if (vars.chapter == 15)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch8A"];
+            if (current.location == "Certain Rooftop" && vars.postEmptyLocation == "Tenkaichi St.")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch15A"];
+            }
+            else if (current.location == "Nakamichi Alley" && vars.postEmptyLocation == "Certain Rooftop")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch15B"];
+            }
+            else if (current.location == "Tenkaichi St." && vars.postEmptyLocation == "Serena")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch15C"];
+            }
         }
-        else if (current.location == "Shofukucho" && vars.postEmptyLocation == "Odyssey's Warehouse")
+        else if (vars.chapter == 16)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch8B"];
+            if (current.location == "Children's Park" && old.location == "Theater Square" && vars.postEmptyLocation == "The Empty Lot")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch16A"];
+            }
+            else if (current.location == "Sebastian Building" && vars.postEmptyLocation == "Park Blvd.")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch16B"];
+            }
         }
-    }
-    else if (vars.chapter == 9)
-    {
-        if (current.location == "Serena Backlot" && vars.postEmptyLocation == "Serena")
+        else if (vars.chapter == 17)
         {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch9A"];
-        }
-    }
-    else if (vars.chapter == 10)
-    {
-        if (current.location == "Tojo Clan Headquarters" && vars.postEmptyLocation == "West Park")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch10A"];
-        }
-        else if (current.location == "Pier" && vars.postEmptyLocation == "Tojo Clan Headquarters")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch10B"];
-        }
-    }
-    else if (vars.chapter == 11)
-    {
-        if (current.location == "Bishamon Bridge" && vars.postEmptyLocation == "The Bed of Styx")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch11A"];
-        }
-    }
-    else if (vars.chapter == 13)
-    {
-        if (current.location == "Benten Inn" && vars.postEmptyLocation == "CAL Videos")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch13A"];
-        }
-        else if (current.location == "Building Under Construction" && vars.postEmptyLocation == "Benten Inn")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch13B"];
-        }
-    }
-    else if (vars.chapter == 14)
-    {
-        if (current.location == "Crescendo Building" && vars.postEmptyLocation == "West Park")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch14A"];
-        }
-    }
-    else if (vars.chapter == 15)
-    {
-        if (current.location == "Certain Rooftop" && vars.postEmptyLocation == "Tenkaichi St.")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch15A"];
-        }
-        else if (current.location == "Nakamichi Alley" && vars.postEmptyLocation == "Certain Rooftop")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch15B"];
-        }
-        else if (current.location == "Tenkaichi St." && vars.postEmptyLocation == "Serena")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch15C"];
-        }
-    }
-    else if (vars.chapter == 16)
-    {
-        if (current.location == "Children's Park" && old.location == "Theater Square" && vars.postEmptyLocation == "The Empty Lot")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch16A"];
-        }
-        else if (current.location == "Sebastian Building" && vars.postEmptyLocation == "Park Blvd.")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch16B"];
-        }
-    }
-    else if (vars.chapter == 17)
-    {
-        if (current.location == "Sagawa's Secret Office" && vars.postEmptyLocation == "Tenkaichi St. Entrance")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch17A"];
-        }
-        else if (current.location == "Dojima Family HQ" && vars.postEmptyLocation == "Nikkyo Consortium Ship")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch17B"];
-        }
-        else if (current.location == "Dojima Family HQ Top Floor" && vars.postEmptyLocation == "Dojima Family HQ")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch17C"];
-        }
-        else if (current.location == "Nikkyo Consortium Ship" && vars.postEmptyLocation == "Dojima Family HQ Top Floor")
-        {
-            vars.postEmptyLocation = current.location;
-            vars.doSplit = settings["ch17D"];
+            if (current.location == "Sagawa's Secret Office" && vars.postEmptyLocation == "Tenkaichi St. Entrance")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch17A"];
+            }
+            else if (current.location == "Dojima Family HQ" && vars.postEmptyLocation == "Nikkyo Consortium Ship")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch17B"];
+            }
+            else if (current.location == "Dojima Family HQ Top Floor" && vars.postEmptyLocation == "Dojima Family HQ")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch17C"];
+            }
+            else if (current.location == "Nikkyo Consortium Ship" && vars.postEmptyLocation == "Dojima Family HQ Top Floor")
+            {
+                vars.postEmptyLocation = current.location;
+                vars.doSplit = settings["ch17D"];
+            }
         }
     }
 }
