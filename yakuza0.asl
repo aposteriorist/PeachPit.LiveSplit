@@ -49,6 +49,7 @@ startup
     vars.postEmptyLocation = "";
 
     settings.Add("Chapters", true, "Split on the end of each chapter");
+        settings.Add("ResultSplits", true, "Split on chapter results screens, rather than on chapter cards", "Chapters");
     settings.Add("Midsplits", false, "Optional splits (check tooltips)");
 
     settings.Add("ch1", false, "Chapter 1", "Midsplits");
@@ -158,10 +159,14 @@ update
         vars.postEmptyLocation = old.location;
     }
 
-    if (current.gameState == "pjcm_result.sbb" && old.gameState != "pjcm_result.sbb")
+    if (current.gameState != old.gameState)
     {
-        vars.chapter++;
-        vars.doSplit = settings["Chapters"];
+        if (settings["ResultSplits"] && current.gameState == "pjcm_result.sbb"
+        || !settings["ResultSplits"] && current.gameState == "pjcm_syotitle.sbb")
+        {
+            vars.chapter++;
+            vars.doSplit = settings["Chapters"] && vars.chapter > 1;
+        }
     }
     else if (vars.chapter == 1)
     {
@@ -370,7 +375,7 @@ update
 
 onStart
 {
-    vars.chapter = 1;
+    vars.chapter = settings["ResultSplits"] ? 1 : 0;
     vars.postEmptyLocation = "";
 }
 
