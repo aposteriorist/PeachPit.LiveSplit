@@ -383,7 +383,7 @@ update
 
 start
 {
-    return current.gameState == "pjcm_title_ps3.sbb" && current.mainMenu == 0 && old.mainMenu == 1;
+    return current.startSelect == 0 && old.startSelect == 1 && current.startIsValid != 0;
 }
 
 onStart
