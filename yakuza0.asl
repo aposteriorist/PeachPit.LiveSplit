@@ -55,9 +55,10 @@ startup
 {
     vars.Splits = new HashSet<string>();
     vars.boss = "";
-    vars.doSplit = false;
     vars.chapter = 1;
     vars.postEmptyLocation = "";
+    vars.doSplit = false;
+    vars.resetIsValid = false;
 
     settings.Add("Chapters", true, "Split on the end of each chapter");
         settings.Add("ResultSplits", true, "Split on chapter results screens, rather than on chapter cards", "Chapters");
@@ -228,6 +229,8 @@ update
             vars.chapter++;
             vars.doSplit = settings["Chapters"] && vars.chapter > 1;
         }
+        
+        vars.resetIsValid = true;
     }
 
     else if (!vars.doSplit && settings["Midsplits"])
@@ -457,4 +460,13 @@ split
 isLoading
 {
     return current.loadState == 1;
+}
+
+reset
+{
+    if (current.gameState == "pjcm_title_ps3.sbb" && vars.resetIsValid)
+    {
+        vars.resetIsValid = false;
+        return true;
+    }
 }
