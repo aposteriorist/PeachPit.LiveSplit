@@ -3,7 +3,7 @@
 // Thank you rythin_sr for the advice, Drake_Shadow and JustSayKuro for initial testing.
 // Description: https://pastebin.com/uTDJEGCk
 // Load remover by DrTChops
-// M Store + GOG + load bugfix by PlayingLikeAss (aposteriorist on Github)
+// M Store, GOG, boss splits, auto-start/reset/end, loading bugfix by PlayingLikeAss (aposteriorist on Github)
 
 state("Yakuza0", "Steam")
 {
@@ -53,12 +53,30 @@ init
 
 startup
 {
+    vars.Splits = new HashSet<string>();
+    vars.boss = "";
     vars.doSplit = false;
     vars.chapter = 1;
     vars.postEmptyLocation = "";
 
     settings.Add("Chapters", true, "Split on the end of each chapter");
         settings.Add("ResultSplits", true, "Split on chapter results screens, rather than on chapter cards", "Chapters");
+
+    settings.Add("Bosses", true, "Boss Splits");
+        settings.Add("h23250_kuze_rush", false, "Ch.1: Kuze", "Bosses");
+        settings.Add("h23285_ri_godhand_short", false, "Ch.4: Massive Man", "Bosses");
+        settings.Add("h23280_ri_godhand", false, "Ch.7: Wen Hai Lee", "Bosses");
+        settings.Add("h23290_kishitani_dosu", false, "Ch.8: Nishitani", "Bosses");
+        settings.Add("h23251_kuze_rush_01", false, "Ch.9: Kuze", "Bosses");
+        settings.Add("h23291_kishitani_dosu_01", false, "Ch.11: Nishitani", "Bosses");
+        settings.Add("h23360_sera_hact", false, "Ch.12: Sera", "Bosses");
+        settings.Add("h23380_kashiwagi", false, "Ch.15: Kashiwagi", "Bosses");
+        settings.Add("h23281_nishiki_bin_hact", false, "Ch.15: Nishiki", "Bosses");
+        settings.Add("h23370_kuze_hact_naguri", false, "Finale: Kuze", "Bosses");
+        settings.Add("h23390_awano", false, "Finale: Awano", "Bosses");
+        settings.Add("h23420_raw_gs_end", false, "Finale: Lao Gui", "Bosses");
+        settings.Add("h23460_shibusawa_last", true, "Finale: Shibusawa", "Bosses");
+
     settings.Add("Midsplits", false, "Optional splits (check tooltips)");
 
     settings.Add("ch1", false, "Chapter 1", "Midsplits");
@@ -168,7 +186,41 @@ update
         vars.postEmptyLocation = old.location;
     }
 
-    if (current.gameState != old.gameState)
+    // Check if we should start tracking a fight, based on relevant hacts.
+    if (settings["Bosses"] && current.hactName != null && settings.ContainsKey(current.hactName) && settings[current.hactName] && !vars.Splits.Contains(current.hactName))
+    {
+        vars.boss = current.hactName;
+    }
+
+    // If we're tracking a fight:
+    if (vars.boss != "")
+    {
+        // Check against the current character's HP, because otherwise a Game Over would give a false positive.
+        if (current.protagHP < 1)
+        {
+            vars.boss = "";
+        }
+        // If it's Shibusawa:
+        else if (vars.boss == "h23460_shibusawa_last" && current.QTEArrayIDX2 != 2 && old.QTEArrayIDX2 == 2)
+        {
+            if (current.QTEArrayIDX2 == 1 || current.protagHP > 50)
+            {
+                vars.doSplit = true;
+                vars.Splits.Add(vars.boss);
+            }
+
+            vars.boss = "";
+        }
+        // Otherwise, no more enemies means we're done.
+        else if (current.enemyCount == 0)
+        {
+            vars.doSplit = true;
+            vars.Splits.Add(vars.boss);
+            vars.boss = "";
+        }
+    }
+
+    else if (!vars.doSplit && current.gameState != old.gameState)
     {
         if (settings["ResultSplits"] && current.gameState == "pjcm_result.sbb"
         || !settings["ResultSplits"] && current.gameState == "pjcm_syotitle.sbb")
@@ -177,7 +229,8 @@ update
             vars.doSplit = settings["Chapters"] && vars.chapter > 1;
         }
     }
-    else if (settings["Midsplits"])
+
+    else if (!vars.doSplit && settings["Midsplits"])
     {
         if (vars.chapter == 1)
         {
