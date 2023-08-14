@@ -7,6 +7,7 @@
 
 state("Yakuza0", "Steam")
 {
+    string25 titleCard: 0x1163EF0, 0x182;
     string40 location: 0x1163F28, 0x150, 0x18, 0x50;
     string40 hactName: 0x1164148, 0x7FA;
     byte QTEArrayIDX2: 0x1164148, 0x13C4;
@@ -69,7 +70,23 @@ startup
     vars.doSplit = false;
 
     settings.Add("Chapters", true, "Chapter End Splits");
-        settings.Add("ResultSplits", true, "Legacy: Split on chapter results screens instead of chapter cards", "Chapters");
+        settings.Add("NewSplits", false, "Split on chapter cards instead of chapter result screens", "Chapters");
+            settings.Add("2d_mn_syotitle_02.dds", true, "Chapter 1: Bound by Oath", "NewSplits");
+            settings.Add("2d_mn_syotitle_03.dds", true, "Chapter 2: The Broker in the Shadows", "NewSplits");
+            settings.Add("2d_mn_syotitle_04.dds", true, "Chapter 3: A Gilded Cage", "NewSplits");
+            settings.Add("2d_mn_syotitle_05.dds", true, "Chapter 4: Proof of Resolve", "NewSplits");
+            settings.Add("2d_mn_syotitle_06.dds", true, "Chapter 5: An Honest Living", "NewSplits");
+            settings.Add("2d_mn_syotitle_07.dds", true, "Chapter 6: The Yakuza Way", "NewSplits");
+            settings.Add("2d_mn_syotitle_08.dds", true, "Chapter 7: A Dark Escape", "NewSplits");
+            settings.Add("2d_mn_syotitle_09.dds", true, "Chapter 8: Tug of War", "NewSplits");
+            settings.Add("2d_mn_syotitle_10.dds", true, "Chapter 9: Ensnared", "NewSplits");
+            settings.Add("2d_mn_syotitle_11.dds", true, "Chapter 10: A Man's Worth", "NewSplits");
+            settings.Add("2d_mn_syotitle_12.dds", true, "Chapter 11: A Murky Riverbed", "NewSplits");
+            settings.Add("2d_mn_syotitle_13.dds", true, "Chapter 12: Den of Desires", "NewSplits");
+            settings.Add("2d_mn_syotitle_14.dds", true, "Chapter 13: Crime & Punishment", "NewSplits");
+            settings.Add("2d_mn_syotitle_15.dds", true, "Chapter 14: Unwavering Bonds", "NewSplits");
+            settings.Add("2d_mn_syotitle_16.dds", true, "Chapter 15: Scattered Light", "NewSplits");
+            settings.Add("2d_mn_syotitle_17.dds", true, "Chapter 16: Proof of Love", "NewSplits");
 
     settings.Add("Bosses", true, "Boss Splits");
         settings.Add("h23250_kuze_rush", false, "Ch.1: Kuze", "Bosses");
@@ -195,13 +212,17 @@ update
         vars.postEmptyLocation = old.location;
     }
 
-    // Check if we should start tracking a fight, based on relevant hacts.
-    if (settings["Bosses"] && current.hactName != null && settings.ContainsKey(current.hactName) && settings[current.hactName] && !vars.Splits.Contains(current.hactName))
+    // If we're not currently tracking a fight:
+    if (vars.boss == "" && settings["Bosses"])
     {
-        vars.boss = current.hactName;
+        // Check if we should start tracking a fight, based on relevant hacts.
+        if (current.hactName != null && settings.ContainsKey(current.hactName) && settings[current.hactName] && !vars.Splits.Contains(current.hactName))
+        {
+            vars.boss = current.hactName;
+        }
     }
 
-    // If we're tracking a fight:
+    // If we're now tracking a fight:
     if (vars.boss != "")
     {
         // Check against the current character's HP, because otherwise a Game Over would give a false positive.
@@ -209,6 +230,7 @@ update
         {
             vars.boss = "";
         }
+
         // If it's Shibusawa:
         else if (vars.boss == "h23460_shibusawa_last" && current.QTEArrayIDX2 != 2 && old.QTEArrayIDX2 == 2)
         {
@@ -220,6 +242,7 @@ update
 
             vars.boss = "";
         }
+
         // Otherwise, no more enemies means we're done.
         else if (current.enemyCount == 0)
         {
@@ -229,17 +252,22 @@ update
         }
     }
 
-    else if (!vars.doSplit && current.gameState != old.gameState)
+    // Is there a chapter split?
+    else if (settings["Chapters"] && settings["NewSplits"] && current.titleCard != old.titleCard && current.titleCard.StartsWith("2d_mn_syotitle"))
     {
-        if (settings["ResultSplits"] && current.gameState == "pjcm_result.sbb"
-        || !settings["ResultSplits"] && current.gameState == "pjcm_syotitle.sbb")
-        {
-            vars.chapter++;
-            vars.doSplit = settings["Chapters"] && vars.chapter > 1;
-        }
+        vars.doSplit == settings.ContainsKey(current.titleCard) && settings[current.titleCard];
+        vars.chapter++;
     }
 
-    else if (!vars.doSplit && settings["Midsplits"])
+    // Is there a chapter split (legacy option)?
+    else if (settings["Chapters"] && !settings["NewSplits"] && current.gameState != old.gameState && current.gameState == "pjcm_result.sbb")
+    {
+        vars.doSplit == true;
+        vars.chapter++;
+    }
+
+    // Is there a mid-chapter split?
+    else if (settings["Midsplits"])
     {
         if (vars.chapter == 1)
         {
@@ -454,7 +482,9 @@ start
 
 onStart
 {
-    vars.chapter = settings["ResultSplits"] ? 1 : 0;
+    vars.Splits.Clear();
+    vars.boss = "";
+    vars.chapter = settings["NewSplits"] ? 0 : 1;
     vars.postEmptyLocation = "";
 }
 
