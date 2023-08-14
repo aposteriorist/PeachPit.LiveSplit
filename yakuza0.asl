@@ -7,29 +7,38 @@
 
 state("Yakuza0", "Steam")
 {
-    byte mainMenu: 0x1084820, 0x5AC;
     string40 location: 0x1163F28, 0x150, 0x18, 0x50;
+    string40 hactName: 0x1164148, 0x7FA;
+    byte QTEArrayIDX2: 0x1164148, 0x13C4;
+    byte startSelect:  0x1164688, 0xC0, 0x130, 0x178, 0x8, 0x224;
+    byte startIsValid: 0x1164688, 0xC0, 0x130, 0x178, 0x8, 0x22C;
+    short protagHP:  0x11690C8, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
+    byte enemyCount: 0x1300768, 0x3F8;
     string25 gameState: 0x1305FC8, 0x50, 0x6E2;
     int loadState: 0x1A696C0, 0x0, 0x2D54;
 }
 
 state("Yakuza0", "M Store")
 {
-    byte mainMenu: 0x16E2CA8, 0x5AC;
     string40 location: 0x14EB6C8, 0x150, 0x18, 0x50;
+    string40 hactName: 0x14EB8E8, 0x7EA;
+    byte QTEArrayIDX2: 0x14EB8E8, 0x130C;
+    byte startSelect:  0x14EBE28, 0xC0, 0x130, 0x178, 0x8, 0x224;
+    int startIsValid:  0x14EBE28, 0xC0, 0x130, 0x178, 0x8, 0x22C;
+    short protagHP:  0x14FA128, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
+    byte enemyCount: 0x16AE2D8, 0x3F8;
     string25 gameState: 0x16C1410, 0x60, 0x6E2;
     int loadState: 0x1E45740, 0x0, 0x2D54;
 }
 
 state("Yakuza0", "GOG")
 {
-    byte mainMenu: 0x1029820, 0x5AC;
     string40 location: 0x1108BA8, 0x150, 0x18, 0x50;
     string40 hactName: 0x1108DC8, 0x7FA;
     byte QTEArrayIDX2: 0x1108DC8, 0x13C4;
-    byte startSelect: 0x1109308, 0xC0, 0x130, 0x178, 0x8, 0x224;
-    int startIsValid: 0x1109308, 0xC0, 0x130, 0x178, 0x8, 0x22C;
-    short protagHP: 0x110DD48, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
+    byte startSelect:  0x1109308, 0xC0, 0x130, 0x178, 0x8, 0x224;
+    int startIsValid:  0x1109308, 0xC0, 0x130, 0x178, 0x8, 0x22C;
+    short protagHP:  0x110DD48, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
     byte enemyCount: 0x12A53E8, 0x3F8;
     string25 gameState: 0x12AAC48, 0x50, 0x6E2;
     int loadState: 0x1A0E140, 0x0, 0x2D54;
@@ -60,8 +69,8 @@ startup
     vars.doSplit = false;
     vars.resetIsValid = false;
 
-    settings.Add("Chapters", true, "Split on the end of each chapter");
-        settings.Add("ResultSplits", true, "Split on chapter results screens, rather than on chapter cards", "Chapters");
+    settings.Add("Chapters", true, "Chapter End Splits");
+        settings.Add("ResultSplits", true, "Legacy: Split on chapter results screens instead of chapter cards", "Chapters");
 
     settings.Add("Bosses", true, "Boss Splits");
         settings.Add("h23250_kuze_rush", false, "Ch.1: Kuze", "Bosses");
@@ -78,7 +87,7 @@ startup
         settings.Add("h23420_raw_gs_end", false, "Finale: Lao Gui", "Bosses");
         settings.Add("h23460_shibusawa_last", true, "Finale: Shibusawa", "Bosses");
 
-    settings.Add("Midsplits", false, "Optional splits (check tooltips)");
+    settings.Add("Midsplits", false, "Mid-Chapter Splits (check tooltips)");
 
     settings.Add("ch1", false, "Chapter 1", "Midsplits");
     settings.Add("ch1A", false, "Visited Dojima Family HQ", "ch1");
