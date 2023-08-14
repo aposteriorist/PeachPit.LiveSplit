@@ -67,7 +67,6 @@ startup
     vars.chapter = 1;
     vars.postEmptyLocation = "";
     vars.doSplit = false;
-    vars.resetIsValid = false;
 
     settings.Add("Chapters", true, "Chapter End Splits");
         settings.Add("ResultSplits", true, "Legacy: Split on chapter results screens instead of chapter cards", "Chapters");
@@ -238,8 +237,6 @@ update
             vars.chapter++;
             vars.doSplit = settings["Chapters"] && vars.chapter > 1;
         }
-        
-        vars.resetIsValid = true;
     }
 
     else if (!vars.doSplit && settings["Midsplits"])
@@ -473,9 +470,5 @@ isLoading
 
 reset
 {
-    if (current.gameState == "pjcm_title_ps3.sbb" && vars.resetIsValid)
-    {
-        vars.resetIsValid = false;
-        return true;
-    }
+    return current.gameState == "pjcm_title_ps3.sbb" && current.gameState != old.gameState;
 }
