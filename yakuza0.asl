@@ -257,14 +257,14 @@ update
     // Is there a chapter split?
     else if (settings["Chapters"] && settings["NewSplits"] && current.titleCard != old.titleCard && current.titleCard.StartsWith("2d_mn_syotitle"))
     {
-        vars.doSplit == settings.ContainsKey(current.titleCard) && settings[current.titleCard];
+        vars.doSplit = settings.ContainsKey(current.titleCard) && settings[current.titleCard];
         vars.chapter++;
     }
 
     // Is there a chapter split (legacy option)?
     else if (settings["Chapters"] && !settings["NewSplits"] && current.gameState != old.gameState && current.gameState == "pjcm_result.sbb")
     {
-        vars.doSplit == true;
+        vars.doSplit = true;
         vars.chapter++;
     }
 
