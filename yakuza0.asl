@@ -11,8 +11,7 @@ state("Yakuza0", "Steam")
     string40 location:  0x1163F28, 0x150, 0x18, 0x50;
     string40 hactName:  0x1164148, 0x7FA;
     byte QTEArrayIDX2:  0x1164148, 0x13C4;
-    byte startSelect:   0x1164688, 0xC0, 0x130, 0x178, 0x8, 0x224;
-    byte startIsValid:  0x1164688, 0xC0, 0x130, 0x178, 0x8, 0x22C;
+    int starter:   0x1164688, 0xC0, 0x130, 0x178, 0x8, 0x22C;
     short protagHP:  0x11690C8, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
     byte enemyCount: 0x1300768, 0x3F8;
     string25 gameState: 0x1305FC8, 0x50, 0x6E2;
@@ -25,8 +24,7 @@ state("Yakuza0", "M Store")
     string40 location:  0x14EB6C8, 0x150, 0x18, 0x50;
     string40 hactName:  0x14EB8E8, 0x7EA;
     byte QTEArrayIDX2:  0x14EB8E8, 0x130C;
-    byte startSelect:   0x14EBE28, 0xC0, 0x130, 0x178, 0x8, 0x224;
-    int startIsValid:   0x14EBE28, 0xC0, 0x130, 0x178, 0x8, 0x22C;
+    int starter:   0x14EBE28, 0xC0, 0x130, 0x178, 0x8, 0x22C;
     short protagHP:  0x14FA128, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
     byte enemyCount: 0x16AE2D8, 0x3F8;
     string25 gameState: 0x16C1410, 0x60, 0x6E2;
@@ -39,8 +37,7 @@ state("Yakuza0", "GOG")
     string40 location:  0x1108BA8, 0x150, 0x18, 0x50;
     string40 hactName:  0x1108DC8, 0x7FA;
     byte QTEArrayIDX2:  0x1108DC8, 0x13C4;
-    byte startSelect:   0x1109308, 0xC0, 0x130, 0x178, 0x8, 0x224;
-    int startIsValid:   0x1109308, 0xC0, 0x130, 0x178, 0x8, 0x22C;
+    int starter:   0x1109308, 0xC0, 0x130, 0x178, 0x8, 0x22C;
     short protagHP:  0x110DD48, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
     byte enemyCount: 0x12A53E8, 0x3F8;
     string25 gameState: 0x12AAC48, 0x50, 0x6E2;
@@ -215,10 +212,10 @@ update
     }
 
     // If we're not currently tracking a fight:
-    if (vars.boss == "" && settings["Bosses"])
+    if (vars.boss == "" && settings["Bosses"] && current.hactName != null)
     {
         // Check if we should start tracking a fight, based on relevant hacts.
-        if (current.hactName != null && settings.ContainsKey(current.hactName) && settings[current.hactName] && !vars.Splits.Contains(current.hactName))
+        if (settings.ContainsKey(current.hactName) && settings[current.hactName] && !vars.Splits.Contains(current.hactName))
         {
             vars.boss = current.hactName;
         }
@@ -479,7 +476,7 @@ update
 
 start
 {
-    return current.startSelect == 0 && old.startSelect == 1 && current.startIsValid != 0;
+    return current.gameState == "pjcm_title_ps3.sbb" && old.starter < 0 && current.starter > 0;
 }
 
 onStart
