@@ -1,7 +1,7 @@
-// Yakuza Kiwami (PC: Steam, M Store) autosplitter & load remover
+// Yakuza Kiwami (PC: Steam, M Store, GOG) autosplitter & load remover
 // Autosplitter by ToxicTT (Discord: ToxicTT#4487)
 // Load remover by DrTChops
-// Refresh + M Store + Settings by PlayingLikeAss (aposteriorist on Github)
+// M Store + GOG + Settings by PlayingLikeAss (aposteriorist on Github)
 
 state("YakuzaKiwami", "Steam")
 {
