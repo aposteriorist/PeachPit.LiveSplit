@@ -5,44 +5,56 @@
 
 state("YakuzaKiwami", "Steam")
 {
-    byte loadState: 0x19D5050, 0x2D54;
     string25 titleCard: 0x10D9410, 0x182;
     string40 hactName: 0x10D9678, 0x7EA;
     short kiryuHP: 0x10DD520, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
     byte enemyCount: 0x1274F20, 0x3F8;
+    byte loadState: 0x19D5050, 0x2D54;
+}
+
+state("YakuzaKiwami_R", "Steam_R")
+{
+    string25 titleCard: 0x1414D90, 0x182;
+    string40 hactName: 0x1414FF8, 0x7EA;
+    byte enemyCount: 0x15B3700, 0x3F8;
+    short kiryuHP: 0x15CA8d8, 0x73E6;
+    byte loadState: 0x1D35940, 0, 0x2D54;
 }
 
 state("YakuzaKiwami", "M Store")
 {
-    byte loadState: 0x1E46C50, 0x2D54;
     string25 titleCard: 0x149C3E0, 0x182;
     string40 hactName: 0x149C648, 0x7EA;
     short kiryuHP: 0x14AAF20, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
     byte enemyCount: 0x1666F40, 0x3F8;
+    byte loadState: 0x1E46C50, 0x2D54;
 }
 
 state("YakuzaKiwami", "GOG")
 {
-    byte loadState: 0x197BAD0, 0x2D54;
     string25 titleCard: 0x1080010, 0x182;
     string40 hactName: 0x1080278, 0x7EA;
     short kiryuHP: 0x1084120, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
     byte enemyCount: 0x121BB20, 0x3F8;
+    byte loadState: 0x197BAD0, 0x2D54;
 }
 
 init
 {
-    switch(modules.First().ModuleMemorySize)
+    if (version != "Steam_R")
     {
-        case 31207424:
-            version = "Steam";
-            break;
-        case 36208640:
-            version = "M Store";
-            break;
-        case 30654464:
-            version = "GOG";
-            break;
+        switch(modules.First().ModuleMemorySize)
+        {
+            case 31207424:
+                version = "Steam";
+                break;
+            case 36208640:
+                version = "M Store";
+                break;
+            case 30654464:
+                version = "GOG";
+                break;
+        }
     }
 }
 
