@@ -14,22 +14,22 @@ state("Yakuza0", "Steam")
     byte QTEArrayIDX2:  0x1164148, 0x13C4;
     uint ActionChapterResult: 0x1164450;
     int starter:   0x1164688, 0xC0, 0x130, 0x178, 0x8, 0x22C;
-    short protagHP:  0x131AFD8, 0x7426;
     byte enemyCount: 0x1300768, 0x3F8;
+    short protagHP:  0x131AFD8, 0x7426;
     int loadState: 0x1A696C0, 0x0, 0x2D54;
 }
 
 state("yakuza0_dc", "DC_Steam")
 {
-    string25 titleCard: 0x1DD81D0, 0x182;
-    string64 location:  0x1DD8208, 0x180;
-    string40 hactName:  0x1DD8428, 0x7EA;
-    byte QTEArrayIDX2:  0x1DD8428, 0x130C;
-    uint ActionChapterResult: 0x1DD8730;
-    int starter:   0x1DD8968, 0xC0, 0x130, 0x178, 0x8, 0x22C;
-    short protagHP:  0x1DE9AA0, 0x7426;
-    byte enemyCount: 0x1DE8408, 0x3F8;
-    int loadState: 0x20B6E40, 0x0, 0x2D54;
+    string25 titleCard: 0x1DD9150, 0x182;
+    string64 location:  0x1DD9188, 0x180;
+    string40 hactName:  0x1DD93A8, 0x7EA;
+    byte QTEArrayIDX2:  0x1DD93A8, 0x130C;
+    uint ActionChapterResult: 0x1DD96B0;
+    int starter:   0x1DD98E8, 0xC0, 0x130, 0x178, 0x8, 0x22C;
+    byte enemyCount: 0x1DE9408, 0x3F8;
+    short protagHP:  0x1DEAAA8, 0x7426;
+    int loadState: 0x20B7EC0, 0x0, 0x2D54;
 }
 
 state("Yakuza0", "M Store")
