@@ -1,62 +1,80 @@
 // Yakuza 0 (PC: Steam, M Store, GOG) autosplitter & load remover
+// + Director's Cut on Steam!
 // Autosplitter by ToxicTT (Discord: ToxicTT#4487)
 // Thank you rythin_sr for the advice, Drake_Shadow and JustSayKuro for initial testing.
 // Description: https://pastebin.com/uTDJEGCk
 // Load remover by DrTChops
-// M Store, GOG, boss splits, auto-start/reset/end, loading bugfix by PlayingLikeAss (aposteriorist on Github)
+// M Store, GOG, DC, boss splits, auto-start/reset/end, loading bugfix by PlayingLikeAss (aposteriorist on Github)
 
 state("Yakuza0", "Steam")
 {
-    int starter:   0x1163ED8, 0x22C;
     string25 titleCard: 0x1163EF0, 0x182;
-    string40 location:  0x1163F28, 0x150, 0x18, 0x50;
+    string64 location:  0x1163F28, 0x180;
     string40 hactName:  0x1164148, 0x7FA;
     byte QTEArrayIDX2:  0x1164148, 0x13C4;
-    short protagHP:  0x11690C8, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
+    uint ActionChapterResult: 0x1164450;
+    int starter:   0x1164688, 0xC0, 0x130, 0x178, 0x8, 0x22C;
+    short protagHP:  0x131AFD8, 0x7426;
     byte enemyCount: 0x1300768, 0x3F8;
-    string25 gameState: 0x1305FC8, 0x50, 0x6E2;
     int loadState: 0x1A696C0, 0x0, 0x2D54;
+}
+
+state("yakuza0_dc", "DC_Steam")
+{
+    string25 titleCard: 0x1DD81D0, 0x182;
+    string64 location:  0x1DD8208, 0x180;
+    string40 hactName:  0x1DD8428, 0x7EA;
+    byte QTEArrayIDX2:  0x1DD8428, 0x130C;
+    uint ActionChapterResult: 0x1DD8730;
+    int starter:   0x1DD8968, 0xC0, 0x130, 0x178, 0x8, 0x22C;
+    short protagHP:  0x1DE9AA0, 0x7426;
+    byte enemyCount: 0x1DE8408, 0x3F8;
+    int loadState: 0x20B6E40, 0x0, 0x2D54;
 }
 
 state("Yakuza0", "M Store")
 {
-    int starter:   0x14EB678, 0x22C;
     string25 titleCard: 0x14EB690, 0x182;
-    string40 location:  0x14EB6C8, 0x150, 0x18, 0x50;
+    string64 location:  0x14EB6C8, 0x180;
     string40 hactName:  0x14EB8E8, 0x7EA;
     byte QTEArrayIDX2:  0x14EB8E8, 0x130C;
+    uint ActionChapterResult: 0x14EBBF0;
+    int starter:   0x14EBE28, 0xC0, 0x130, 0x178, 0x8, 0x22C;
     short protagHP:  0x14FA128, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
     byte enemyCount: 0x16AE2D8, 0x3F8;
-    string25 gameState: 0x16C1410, 0x60, 0x6E2;
     int loadState: 0x1E45740, 0x0, 0x2D54;
 }
 
 state("Yakuza0", "GOG")
 {
-    int starter:   0x1108B58, 0x22C;
     string25 titleCard: 0x1108B70, 0x182;
-    string40 location:  0x1108BA8, 0x150, 0x18, 0x50;
+    string64 location:  0x1108BA8, 0x180;
     string40 hactName:  0x1108DC8, 0x7FA;
     byte QTEArrayIDX2:  0x1108DC8, 0x13C4;
+    uint ActionChapterResult: 0x11090D0;
+    int starter:   0x1109308, 0xC0, 0x130, 0x178, 0x8, 0x22C;
     short protagHP:  0x110DD48, 0x4C0, 0xD58, 0x10, 0x28, 0x16;
     byte enemyCount: 0x12A53E8, 0x3F8;
-    string25 gameState: 0x12AAC48, 0x50, 0x6E2;
     int loadState: 0x1A0E140, 0x0, 0x2D54;
 }
 
 init
 {
-    switch(modules.First().ModuleMemorySize)
+    // TO-DO: Check for "Yakuza0" name instead
+    if (version != "DC_Steam")
     {
-        case 31207424:
-            version = "Steam";
-            break;
-        case 36274176:
-            version = "M Store";
-            break;
-        case 31997952:
-            version = "GOG";
-            break;
+        switch(modules.First().ModuleMemorySize)
+        {
+            case 31207424:
+                version = "Steam";
+                break;
+            case 36274176:
+                version = "M Store";
+                break;
+            case 31997952:
+                version = "GOG";
+                break;
+        }
     }
 }
 
@@ -259,7 +277,7 @@ update
     }
 
     // Is there a chapter split (legacy option)?
-    else if (settings["Chapters"] && !settings["NewSplits"] && current.gameState != old.gameState && current.gameState == "pjcm_result.sbb")
+    else if (settings["Chapters"] && !settings["NewSplits"] && current.ActionChapterResult != 0 && current.ActionChapterResult != old.ActionChapterResult)
     {
         vars.doSplit = true;
         vars.chapter++;
@@ -476,7 +494,7 @@ update
 
 start
 {
-    return current.gameState == "pjcm_title_ps3.sbb" && old.starter < 0 && current.starter > 0;
+    return old.starter < 0 && current.starter > 0;
 }
 
 onStart
@@ -495,9 +513,4 @@ split
 isLoading
 {
     return current.loadState == 1;
-}
-
-reset
-{
-    return current.gameState == "pjcm_title_ps3.sbb" && current.gameState != old.gameState;
 }
