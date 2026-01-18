@@ -21,15 +21,15 @@ state("Yakuza0", "Steam")
 
 state("yakuza0_dc", "DC_Steam")
 {
-    string25 titleCard: 0x1DD9150, 0x182;
-    string64 location:  0x1DD9188, 0x180;
-    string40 hactName:  0x1DD93A8, 0x7EA;
-    byte QTEArrayIDX2:  0x1DD93A8, 0x130C;
-    uint ActionChapterResult: 0x1DD96B0;
-    int starter:   0x1DD98E8, 0xC0, 0x130, 0x178, 0x8, 0x22C;
-    byte enemyCount: 0x1DE9408, 0x3F8;
-    short protagHP:  0x1DEAAA8, 0x7426;
-    int loadState: 0x20B7EC0, 0x0, 0x2D54;
+    string25 titleCard: 0x1DD91D0, 0x182;
+    string64 location:  0x1DD9208, 0x180;
+    string40 hactName:  0x1DD9428, 0x7EA;
+    byte QTEArrayIDX2:  0x1DD9428, 0x130C;
+    uint ActionChapterResult: 0x1DD9730;
+    int starter:   0x1DD9968, 0xC0, 0x130, 0x178, 0x8, 0x22C;
+    byte enemyCount: 0x1DE9488, 0x3F8;
+    short protagHP:  0x1DEAB40, 0x7426;
+    int loadState: 0x20B7F40, 0x0, 0x2D54;
 }
 
 state("Yakuza0", "M Store")
